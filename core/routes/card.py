@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.lib.generic import list_view, get_view, create_view
-from core.lib.schemas.card import CardView, CardCreateView
+from core.lib.schemas.card import CardView, CardCreateView, CardInsertView
 from db.database import get_db
 from db.models.finance import Card
 
@@ -23,5 +23,5 @@ async def get_cards(db: AsyncSession = Depends(get_db)) -> list[CardView]:
     return await list_view(Card, CardView, db)
 
 @router.post("/create")
-async def create_card(card: CardCreateView, db: AsyncSession = Depends(get_db)) -> CardCreateView:
-    return await create_view(Card, card, CardCreateView, db)
+async def create_card(card: CardCreateView, db: AsyncSession = Depends(get_db)) -> CardInsertView:
+    return await create_view(Card, card, CardInsertView, db)

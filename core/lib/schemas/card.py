@@ -22,10 +22,9 @@ class CardCreateView(BaseModel):
         from_attributes = True
 
 class CardInsertView(BaseModel):
-    wallet_number: str = Field(serialization_alias="wallet_number", validation_alias="walletNumber", description="Wallet number")
-    card_type: str = Field(serialization_alias="card_type", validation_alias="cardType", description="Card type")
-    card_number: str = Field(serialization_alias="card_number", validation_alias="cardNumber", description="Card number")
-    expiration_date: str = Field(serialization_alias="expiration_date", validation_alias="expirationDate", description="Card expiration date")
+    wallet_number: str = Field(validation_alias="wallet_number", serialization_alias="walletNumber", description="Wallet number")
+    card_type: str = Field(validation_alias="card_type", serialization_alias="cardType", description="Card type")
+
 
     class Config:
         orm_mode = True
