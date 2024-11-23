@@ -46,7 +46,7 @@ def _create_refresh_token(payload: dict) -> JwtTokenSchema:
 
 
 def create_token_pair(user: User) -> TokenPair:
-    payload = {SUB: str(user.id), JTI: str(uuid.uuid4()), IAT: datetime.utcnow()}
+    payload = {SUB: str(user.user_uuid), JTI: str(uuid.uuid4()), IAT: datetime.utcnow()}
 
     return TokenPair(
         access=_create_access_token(payload={**payload}),
