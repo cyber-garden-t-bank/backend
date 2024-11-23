@@ -19,7 +19,7 @@ from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4, F
 
 class UserBase(BaseModel):
     email: EmailStr
-    phone: str
+    phone: str | None = None
     firstname: str
     middlename: str
     lastname: str

@@ -19,7 +19,7 @@ class User(Base, AttributeMixin):
     __tablename__ = "bank_user"
     user_uuid: Mapped[pk_id]
     email: Mapped[str] = mapped_column(String(255), unique=True)
-    phone: Mapped[str] = mapped_column(String(255), unique=True)
+    phone: Mapped[str] = mapped_column(String(255), nullable=True)
     firstname: Mapped[str] = mapped_column(String(255))
     middlename: Mapped[str] = mapped_column(String(255))
     lastname: Mapped[str] = mapped_column(String(255))
