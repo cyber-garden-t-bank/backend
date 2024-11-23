@@ -20,3 +20,5 @@ class WalletCreateView(BaseModel):
 
 class WalletUserRequiredView(WalletView):
     user_uuid: str = Field(validation_alias="user_uuid", alias="userUUID", description="User uuid")
+    wallet_number: str = Field(alias="walletNumber", description="Wallet number")
+    wallet_type: str = Field(alias="walletType", description="Wallet type")
