@@ -28,7 +28,7 @@ router = APIRouter(
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-@router.post("/register", response_model=schemas.User)
+@router.post("/register")
 async def register(
     response: Response,
     data: schemas.UserRegister,
