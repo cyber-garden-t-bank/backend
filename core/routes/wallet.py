@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from common.exceptions import BadRequestException, ForbiddenException
 from common.jwt.jwt import oauth2_scheme, decode_access_token, SUB
 from core.lib.generic import list_view, create_view, get_view, selected_list
-from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletUserRequiredView
+from core.lib.schemas.wallet import WalletView, WalletCreateView
 from db.database import get_db
 from db.models.finance import Wallet
 from db.models.users import User
@@ -36,10 +36,10 @@ async def create_wallet(token: Annotated[str, Depends(oauth2_scheme)],wallet: Wa
 
     if not user:
         raise ForbiddenException("User not found")
-    print(user_uuid=user.user_uuid)
-    wallet = WalletCreateView(user_uuid=user.user_uuid, wallet_number=wallet.wallet_number, wallet_type=wallet.wallet_type)
 
-    return await create_view(Wallet, wallet, WalletUserRequiredView, db)
+    wallet.user_uuid = user.user_uuid
+
+    return await create_view(Wallet, wallet, WalletCreateView, db)
 
 
 @router.get("/detail/{wallet_number}")
