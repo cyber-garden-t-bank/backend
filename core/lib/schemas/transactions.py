@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 class _Transaction(BaseModel):
     amount: float = Field(description="Transaction amount")
     status: str = Field(description="Transaction status")
+    category: str = Field(description="Transaction category")
 
 
 class _IncomeTransaction(BaseModel):
