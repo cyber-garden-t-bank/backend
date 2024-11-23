@@ -13,9 +13,9 @@ class WalletView(BaseModel):
         from_attributes = True
 
 class WalletCreateView(BaseModel):
-    user_uuid: str | None = Optional[Field(alias="userUUID", description="User uuid")]
-    wallet_number: str = Field(alias="walletNumber", description="Wallet number")
-    wallet_type: str = Field(alias="walletType", description="Wallet type")
+    user_uuid: str | None = Optional[Field( description="User uuid")]
+    wallet_number: str = Field(validation_alias="walletNumber", serialization_alias="wallet_number", description="Wallet number")
+    wallet_type: str = Field(validation_alias="walletType", serialization_alias="wallet_type", description="Wallet type")
 
     class Config:
         orm_mode = True
