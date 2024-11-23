@@ -3,13 +3,14 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth.src.schemas import User
+
 from common.exceptions import BadRequestException, ForbiddenException
 from common.jwt.jwt import oauth2_scheme, decode_access_token, SUB
-from core.lib.generic import list_view, create_view, get_view, author_list, selected_list
+from core.lib.generic import list_view, create_view, get_view, selected_list
 from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletUserRequiredView
 from db.database import get_db
 from db.models.finance import Wallet
+from db.models.users import User
 
 router = APIRouter(
     prefix="/wallet",
