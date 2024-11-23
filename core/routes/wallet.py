@@ -36,6 +36,8 @@ async def create_wallet(token: Annotated[str, Depends(oauth2_scheme)],wallet: Wa
 
     if not user:
         raise ForbiddenException("User not found")
+    wallet = wallet.model_dump()
+    wallet["user_uuid"] = user.user_uuid
 
     return await create_view_from_dict(Wallet, wallet.model_dump(), db)
 
