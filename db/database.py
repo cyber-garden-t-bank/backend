@@ -74,7 +74,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     async def select_by_expr(cls,  expr, db: AsyncSession):
         query = select(cls).where(expr)
         result = await db.execute(query)
-        return result
+        return result.scalars().all()
 
 
 

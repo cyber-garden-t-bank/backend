@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from common.exceptions import BadRequestException, ForbiddenException
 from common.jwt.jwt import oauth2_scheme, decode_access_token, SUB
 from core.lib.generic import list_view, create_view, get_view, selected_list, create_view_from_dict
-from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletInsertView
+from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletInsertView, WalletRowsView
 from db.database import get_db
 from db.models.finance import Wallet
 from db.models.users import User
@@ -21,10 +21,10 @@ router = APIRouter(
 
 
 @router.get("/list")
-async def get_wallets(token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[WalletView]|None:
+async def get_wallets(token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[WalletRowsView]|None:
     token_data = await decode_access_token(token=token, db=db)
     expr = (Wallet.user_uuid == token_data[SUB])
-    return await selected_list(expr, Wallet, WalletView, db)
+    return await selected_list(expr, Wallet, WalletRowsView, db)
 
 
 
@@ -36,8 +36,9 @@ async def create_wallet(token: Annotated[str, Depends(oauth2_scheme)],wallet: Wa
 
     if not user:
         raise ForbiddenException("User not found")
+
     wallet = wallet.model_dump()
-    wallet["user_uuid"] = user.user_uuid
+    wallet["user_uuid"] = token_data[SUB]
 
     return await create_view_from_dict(Wallet, wallet, db)
 

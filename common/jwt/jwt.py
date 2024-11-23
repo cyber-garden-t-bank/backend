@@ -95,7 +95,7 @@ def refresh_token_state(token: str):
 
 def mail_token(user: User):
     """Return 2 hour lifetime access_token"""
-    payload = {SUB: str(user.id), JTI: str(uuid.uuid4()), IAT: datetime.utcnow()}
+    payload = {SUB: str(user.user_uuid), JTI: str(uuid.uuid4()), IAT: datetime.utcnow()}
     return _create_access_token(payload=payload, minutes=2 * 60).token
 
 

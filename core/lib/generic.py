@@ -7,6 +7,8 @@ async def list_view(model_db,model_pd, db: AsyncSession):
 
 async def selected_list(expr, model_db, model_pd, db: AsyncSession):
     rows = await model_db.select_by_expr(expr, db)
+    if rows is None:
+        return None
     return [model_pd.model_validate(row) for row in rows]
 
 async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession):
