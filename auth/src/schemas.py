@@ -31,7 +31,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-
+    user_uuid: UUID4
     class Config:
         orm_mode = True
         from_attributes = True
