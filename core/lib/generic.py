@@ -2,7 +2,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def list_view(model_db,model_pd, db: AsyncSession):
-    rows = await model_db.find_all(db)
+    rows = await model_db.select_all(db)
+    return [model_pd.model_validate(row) for row in rows]
+
+async def selected_list(expr, model_db, model_pd, db: AsyncSession):
+    rows = await model_db.select_by_expr(expr, db)
     return [model_pd.model_validate(row) for row in rows]
 
 async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession):

@@ -59,16 +59,24 @@ class Base(AsyncAttrs, DeclarativeBase):
         return result.scalars().first()
 
     @classmethod
-    async def find_all(cls, db: AsyncSession):
+    async def find_by_expr(cls, db: AsyncSession, expr):
+        query = select(cls).where(expr)
+        result = await db.execute(query)
+        return result.scalars().first()
+
+    @classmethod
+    async def select_all(cls, db: AsyncSession):
         query = select(cls)
         result = await db.execute(query)
         return result.scalars().all()
 
     @classmethod
-    async def find_by_expr(cls, db: AsyncSession, expr):
+    async def select_by_expr(cls,  expr, db: AsyncSession):
         query = select(cls).where(expr)
         result = await db.execute(query)
-        return result.scalars().first()
+        return result
+
+
 
 
 async def get_db():
