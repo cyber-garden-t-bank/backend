@@ -24,6 +24,7 @@ class User(Base, AttributeMixin):
     middlename: Mapped[str] = mapped_column(String(255))
     lastname: Mapped[str] = mapped_column(String(255))
     password: Mapped[str] = mapped_column(String(255))
+    is_active: Mapped[bool] = mapped_column(default=True)
     # birthday: Mapped[str] = mapped_column(String(255))
     # gender: Mapped[str] = mapped_column(String(255))
     # account_status: Mapped[str] = mapped_column(String(255))
