@@ -30,6 +30,7 @@ ENV KAFKA_BROKERS=$KAFKA_BROKERS
 COPY ./core /app/core
 COPY ./db /app/db
 
+COPY ./common /app/common
 
 
 ENTRYPOINT ["uvicorn", "core.run_web:app", "--host", "0.0.0.0", "--port", "8000"]

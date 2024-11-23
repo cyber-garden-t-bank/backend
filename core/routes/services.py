@@ -1,7 +1,9 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
+from common.jwt.jwt import oauth2_scheme
 from core.lib.generic import list_view, create_view, get_view
 from core.lib.schemas.services import ServiceCreateView, ServiceView
 
@@ -21,8 +23,9 @@ async def get_services(db: AsyncSession = Depends(get_db)) -> list[ServiceView]:
     return await list_view(Service, ServiceView, db)
 
 @router.post("/create")
-async def create_wallet(wallet: ServiceCreateView, db: AsyncSession = Depends(get_db)) -> ServiceView:
-    return await create_view(Service, wallet, ServiceView, db)
+async def create_wallet(service: ServiceCreateView, db: AsyncSession = Depends(get_db)) -> ServiceView:
+
+    return await create_view(Service, service, ServiceView, db)
 
 
 @router.get("/detail/{service_name}")

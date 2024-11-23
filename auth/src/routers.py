@@ -5,7 +5,7 @@ from fastapi.requests import Request
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Response, Cookie
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth.src.dependencies import oauth2_scheme
+
 from db.database import get_db
 from auth.src import schemas
 from common.jwt.hash import get_password_hash
@@ -16,9 +16,9 @@ from common.jwt.jwt import (
     add_refresh_token_cookie,
     SUB,
     JTI,
-    EXP,
+    EXP, oauth2_scheme,
 )
-from auth.src.exceptions import BadRequestException, ForbiddenException
+from common.exceptions import BadRequestException, ForbiddenException
 from db.models.users import User, BlackListToken
 
 router = APIRouter(

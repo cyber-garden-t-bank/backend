@@ -7,10 +7,10 @@ from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models.users import User
-from common.jwt.jwt import decode_access_token, SUB
+from common.jwt.jwt import decode_access_token, SUB, oauth2_scheme
 from db.database import get_db
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 async def get_current_user(

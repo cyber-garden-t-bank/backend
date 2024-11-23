@@ -1,12 +1,17 @@
 import uuid
 from datetime import timedelta, datetime, timezone
+
+from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from fastapi import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from auth import config
 from auth.src.schemas import User, TokenPair, JwtTokenSchema
-from auth.src.exceptions import AuthFailedException
+from common.exceptions import AuthFailedException
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
 
 REFRESH_COOKIE_NAME = "refresh"
 SUB = "sub"

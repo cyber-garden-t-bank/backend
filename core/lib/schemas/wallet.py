@@ -11,10 +11,12 @@ class WalletView(BaseModel):
         from_attributes = True
 
 class WalletCreateView(BaseModel):
-    user_uuid: str = Field(alias="user", description="User uuid")
     wallet_number: str = Field(alias="walletNumber", description="Wallet number")
     wallet_type: str = Field(alias="walletType", description="Wallet type")
 
     class Config:
         orm_mode = True
         from_attributes = True
+
+class WalletUserRequiredView(WalletView):
+    user_uuid: str = Field(validation_alias="user_uuid", alias="userUUID", description="User uuid")
