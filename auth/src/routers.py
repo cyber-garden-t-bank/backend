@@ -50,10 +50,23 @@ async def register(
     user = User(**user_data)
     user.is_active = True
     await user.save(db=db)
-    user_schema = schemas.User.from_orm(user)
-    return login(
-        data=schemas.UserLogin(email=user.email, password=data.password), response=response, db=db)
 
+
+    user = await User.authenticate(
+        db=db, email=user.email, password=user.password
+    )
+
+    if not user:
+        raise BadRequestException(detail="Incorrect email or password")
+
+    # if not user.is_active:
+    #     raise ForbiddenException()
+
+    user = schemas.User.from_orm(user)
+
+    token_pair = create_token_pair(user=user)
+
+    add_refresh_token_cookie(response=response, token=token_pair.refresh.token)
 
 
 @router.post("/login")
