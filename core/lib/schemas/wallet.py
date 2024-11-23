@@ -19,6 +19,6 @@ class WalletCreateView(BaseModel):
         from_attributes = True
 
 class WalletUserRequiredView(WalletView):
-    user_uuid: str = Field(validation_alias="user_uuid", alias="userUUID", description="User uuid")
-    wallet_number: str = Field(validation_alias="wallet_number",alias="walletNumber", description="Wallet number")
-    wallet_type: str = Field(validation_alias="wallet_number",alias="walletType", description="Wallet type")
+    user_uuid: str = Field(serialization_alias="user_uuid", alias="userUUID", description="User uuid")
+    wallet_number: str = Field(serialization_alias="wallet_number", alias="walletNumber", description="Wallet number")
+    wallet_type: str = Field(serialization_alias="wallet_number",alias="walletType", description="Wallet type")
