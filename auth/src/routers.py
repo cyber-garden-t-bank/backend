@@ -44,7 +44,6 @@ async def register(
 
     # save user to db
     user = User(**user_data)
-    user.is_active = True
     await user.save(db=db)
     user_schema = schemas.User.from_orm(user)
     return user_schema
@@ -110,7 +109,6 @@ async def me(
     db: AsyncSession = Depends(get_db),
 ):
     token_data = await decode_access_token(token=token, db=db)
-    print(request.cookies)
     return await User.find_by_id(db=db, id=token_data[SUB])
 
 

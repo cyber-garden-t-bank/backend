@@ -1,31 +1,17 @@
 
 from datetime import datetime
-from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4
+from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4, Field
 
-# class User(Base, AttributeMixin):
-#     __tablename__ = "user"
-#     user_uuid: Mapped[pk_id]
-#     email: Mapped[str] = mapped_column(String(255), unique=True)
-#     phone: Mapped[str] = mapped_column(String(255), unique=True)
-#     firstname: Mapped[str] = mapped_column(String(255))
-#     middlename: Mapped[str] = mapped_column(String(255))
-#     lastname: Mapped[str] = mapped_column(String(255))
-#     password: Mapped[str]
-#     birthday: Mapped[str] = mapped_column(String(255))
-#     gender: Mapped[str] = mapped_column(String(255))
-#     account_status: Mapped[str] = mapped_column(String(255))
+
 
 
 class UserBase(BaseModel):
     email: EmailStr
-    phone: str
+    phone: str | None = None
     firstname: str
     middlename: str
     lastname: str
     password: str
-    birthday: str
-    gender: str
-    account_status: str
 
 
 class UserCreate(UserBase):
@@ -33,7 +19,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-
+    user_uuid: UUID4
     class Config:
         orm_mode = True
         from_attributes = True
@@ -42,7 +28,7 @@ class User(UserBase):
 
 class UserRegister(UserBase):
     password: str
-    confirm_password: str
+    confirm_password: str = Field(alias="repeatPassword")
     class Config:
         orm_mode = True
         from_attributes = True

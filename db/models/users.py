@@ -19,14 +19,15 @@ class User(Base, AttributeMixin):
     __tablename__ = "bank_user"
     user_uuid: Mapped[pk_id]
     email: Mapped[str] = mapped_column(String(255), unique=True)
-    phone: Mapped[str] = mapped_column(String(255), unique=True)
+    phone: Mapped[str] = mapped_column(String(255), nullable=True)
     firstname: Mapped[str] = mapped_column(String(255))
     middlename: Mapped[str] = mapped_column(String(255))
     lastname: Mapped[str] = mapped_column(String(255))
     password: Mapped[str] = mapped_column(String(255))
-    birthday: Mapped[str] = mapped_column(String(255))
-    gender: Mapped[str] = mapped_column(String(255))
-    account_status: Mapped[str] = mapped_column(String(255))
+    is_active: Mapped[bool] = mapped_column(default=True)
+    # birthday: Mapped[str] = mapped_column(String(255))
+    # gender: Mapped[str] = mapped_column(String(255))
+    # account_status: Mapped[str] = mapped_column(String(255))
 
     @classmethod
     async def find_by_email(cls, db: AsyncSession, email: str):

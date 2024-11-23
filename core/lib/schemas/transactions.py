@@ -6,6 +6,10 @@ class _Transaction(BaseModel):
     status: str = Field(description="Transaction status")
 
 
+class _IncomeTransaction(BaseModel):
+    amount: float = Field(description="Transaction amount")
+    category: str = Field(description="Transaction category")
+
 
 class TransactionView(_Transaction):
     transaction_uuid: str = Field(validation_alias="transaction_uuid", alias="transactionUuid", description="Transaction uuid")
@@ -35,3 +39,14 @@ class TransactionCreateView(_Transaction):
     class Config:
         orm_mode = True
         from_attributes = True
+
+
+
+class IncomeTransactionView(_IncomeTransaction):
+    transaction_uuid: str = Field(validation_alias="transaction_uuid", alias="transactionUuid", description="Transaction uuid")
+
+    created_at: str = Field(validation_alias="created_at", alias="createdAt", description="Created at")
+    updated_at: str = Field(validation_alias="updated_at", alias="updatedAt", description="Updated at")
+
+    class Config:
+        orm_mode = True
