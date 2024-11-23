@@ -13,8 +13,9 @@ class CardView(BaseModel):
         from_attributes = True
 
 class CardCreateView(BaseModel):
-    wallet_number: str = Field(alias="walletNumber", description="Wallet number")
-    card_type: str = Field(alias="cardType", description="Card type")
+    wallet_number: str = Field(serialization_alias="wallet_number", validation_alias="walletNumber",
+                               description="Wallet number")
+    card_type: str = Field(serialization_alias="card_type", validation_alias="cardType", description="Card type")
 
     class Config:
         orm_mode = True
