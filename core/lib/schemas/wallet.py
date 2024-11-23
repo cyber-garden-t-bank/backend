@@ -19,5 +19,3 @@ class WalletCreateView(BaseModel):
         orm_mode = True
         from_attributes = True
 
-class WalletUserRequiredView(WalletView):
-
