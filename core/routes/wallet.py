@@ -12,7 +12,7 @@ from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletInsertVi
 from db.database import get_db
 from db.models.finance import Wallet, Card
 from db.models.users import User
-from receipt.examples.image2text.easyocr_test import result
+
 
 router = APIRouter(
     prefix="/wallet",
