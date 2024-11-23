@@ -1,4 +1,6 @@
+
 from pydantic import BaseModel, Field
+from typing_extensions import Optional
 
 
 class WalletView(BaseModel):
@@ -11,7 +13,7 @@ class WalletView(BaseModel):
         from_attributes = True
 
 class WalletCreateView(BaseModel):
-    user_uuid: str | None = Field(alias="userUUID", description="User uuid")
+    user_uuid: str | None = Optional[Field(alias="userUUID", description="User uuid")]
     wallet_number: str = Field(alias="walletNumber", description="Wallet number")
     wallet_type: str = Field(alias="walletType", description="Wallet type")
 
