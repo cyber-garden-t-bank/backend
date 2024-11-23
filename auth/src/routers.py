@@ -52,19 +52,19 @@ async def register(
     await user.save(db=db)
 
 
-    user = await User.authenticate(
+    user_auth = await User.authenticate(
         db=db, email=user.email, password=user.password
     )
 
-    if not user:
+    if not user_auth:
         raise BadRequestException(detail="Incorrect email or password")
 
     # if not user.is_active:
     #     raise ForbiddenException()
 
-    user = schemas.User.from_orm(user)
+    user_auth = schemas.User.from_orm(user_auth)
 
-    token_pair = create_token_pair(user=user)
+    token_pair = create_token_pair(user=user_auth)
 
     add_refresh_token_cookie(response=response, token=token_pair.refresh.token)
 
