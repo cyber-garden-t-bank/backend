@@ -1,6 +1,7 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -9,8 +10,9 @@ from common.jwt.jwt import oauth2_scheme, decode_access_token, SUB
 from core.lib.generic import list_view, create_view, get_view, selected_list, create_view_from_dict
 from core.lib.schemas.wallet import WalletView, WalletCreateView, WalletInsertView, WalletRowsView
 from db.database import get_db
-from db.models.finance import Wallet
+from db.models.finance import Wallet, Card
 from db.models.users import User
+from receipt.examples.image2text.easyocr_test import result
 
 router = APIRouter(
     prefix="/wallet",
@@ -20,11 +22,25 @@ router = APIRouter(
 
 
 
-@router.get("/list")
-async def get_wallets(token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[WalletRowsView]|None:
+@router.get("/list", response_model=list[WalletRowsView])
+async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)) -> Optional[list[WalletRowsView]]:
+    # Декодирование токена
     token_data = await decode_access_token(token=token, db=db)
-    expr = (Wallet.user_uuid == token_data[SUB])
-    return await selected_list(expr, Wallet, WalletRowsView, db)
+
+    query = (
+        select(Wallet, Card)
+        .join(Card, Card.card_number == Wallet.wallet_number)
+        .where(Wallet.user_uuid == token_data[SUB])
+    )
+
+    result = await db.execute(query)
+    rows = result.all()
+
+    if not rows:
+        return None
+
+    return [WalletRowsView.model_validate(row) for row in rows]
+
 
 
 
