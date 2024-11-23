@@ -27,14 +27,18 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     token_data = await decode_access_token(token=token, db=db)
 
-    join = Wallet.__tablename__.join(Card.__tablename__, Wallet.wallet_number == Card.wallet_number)
-
-    query = select(Wallet, Card).select_from(join).where(Wallet.user_uuid == token_data[SUB])
+    query = (
+        select(Wallet, Card)
+        .join(Card, Card.card_number == Wallet.wallet_number)
+        .where(Wallet.user_uuid == token_data[SUB])
+    )
 
     print(query)
 
     result = await db.execute(query)
     rows = result.mappings().all()
+
+    print(rows)
 
     return rows
 
