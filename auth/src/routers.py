@@ -44,7 +44,6 @@ async def register(
 
     # save user to db
     user = User(**user_data)
-    user.is_active = True
     await user.save(db=db)
     user_schema = schemas.User.from_orm(user)
     return user_schema
