@@ -30,6 +30,7 @@ ENV POSTGRES_NAME=$POSTGRES_NAME
 COPY ./auth /app/auth
 COPY ./db /app/db
 
+COPY ./common /app/common
 
 
 ENTRYPOINT ["uvicorn", "auth.run_web:app", "--host", "0.0.0.0", "--port", "8001"]
