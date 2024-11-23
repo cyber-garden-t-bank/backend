@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI
 import uvicorn
 
-from auth.src.routers import router as router_video
+from auth.src.routers import router as router_auth
 
 from fastapi import Response
 
@@ -32,12 +32,9 @@ async def add_cors_headers(request, call_next):
     return response
 
 
-app.include_router(router_video)
+app.include_router(router_auth)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
 
 if __name__ == "__main__":

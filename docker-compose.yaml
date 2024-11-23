@@ -1,3 +1,10 @@
+x-postgres-environment-vars: &env-vars
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_HOST: db
+  POSTGRES_NAME: postgres
+  POSTGRES_PORT: 5432
+
 
 services:
   nginx:
@@ -20,11 +27,20 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      <<: *env-vars
     volumes:
       - postgres-data:/var/lib/postgresql/data
+
+  auth:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: docker_iternal/auth.Dockerfile
+    ports:
+      - 8001:8001
+    environment:
+      <<: *env-vars
 
   core:
     depends_on:
@@ -37,12 +53,9 @@ services:
     ports:
       - 8000:8000
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_NAME=postgres
-      - KAFKA_BROKERS=kafka:29092
+      <<: *env-vars
+      KAFKA_BROKERS: kafka:29092
+
   migrations:
     depends_on:
       - db
@@ -50,11 +63,7 @@ services:
       context: .
       dockerfile: docker_iternal/migrations.Dockerfile
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_NAME=postgres
+      <<: *env-vars
 
   ml-worker:
     depends_on:
@@ -63,12 +72,9 @@ services:
       context: .
       dockerfile: docker_iternal/ml-worker.Dockerfile
     environment:
-      - KAFKA_BROKERS=kafka:29092
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_NAME=postgres
+      <<: *env-vars
+      KAFKA_BROKERS: kafka:29092
+
   zookeeper:
     image: bitnami/zookeeper:latest
     restart: on-failure
