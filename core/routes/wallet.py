@@ -29,7 +29,7 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     query = (
         select(Wallet, Card)
-        .join(Card, Card.card_number == Wallet.wallet_number)
+        .join(Card, Card.wallet_number == Wallet.wallet_number)
         .where(Wallet.user_uuid == token_data[SUB])
     )
 
