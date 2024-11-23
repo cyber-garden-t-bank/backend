@@ -3,7 +3,7 @@ LABEL authors="exizman"
 
 WORKDIR /app
 
-COPY ./requirements.txt ./requirements.txt
+COPY ./ml-worker/requirements.txt /app/ml-worker/requirements.txt
 
 RUN pip install -r requirements.txt
 ENV PYTHONUNBUFFERED=1
