@@ -30,9 +30,13 @@ router = APIRouter(
 
 @router.post("/register", response_model=schemas.User)
 async def register(
+    response: Response,
     data: schemas.UserRegister,
+
     background_tasks: BackgroundTasks,
+
     db: AsyncSession = Depends(get_db),
+
 ):
     user = await User.find_by_email(db=db, email=data.email)
     if user:
@@ -47,7 +51,8 @@ async def register(
     user.is_active = True
     await user.save(db=db)
     user_schema = schemas.User.from_orm(user)
-    return user_schema
+    return login(
+        data=schemas.UserLogin(email=user.email, password=data.password), response=response, db=db)
 
 
 
