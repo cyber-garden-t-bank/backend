@@ -58,6 +58,18 @@ class Base(AsyncAttrs, DeclarativeBase):
         result = await db.execute(query)
         return result.scalars().first()
 
+    @classmethod
+    async def find_all(cls, db: AsyncSession):
+        query = select(cls)
+        result = await db.execute(query)
+        return result.scalars().all()
+
+    @classmethod
+    async def find_by_expr(cls, db: AsyncSession, expr):
+        query = select(cls).where(expr)
+        result = await db.execute(query)
+        return result.scalars().first()
+
 
 async def get_db():
     async with SessionFactory() as db:

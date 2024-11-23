@@ -3,7 +3,7 @@ LABEL authors="exizman"
 
 WORKDIR /app
 
-COPY ./requirements.txt ./requirements.txt
+COPY ./core/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 
@@ -12,7 +12,6 @@ ENV PYTHONUNBUFFERED=1
 
 ARG POSTGRES_USER
 ARG POSTGRES_PASSWORD
-ARG POSTGRES_HOST
 ARG POSTGRES_PORT
 ARG POSTGRES_NAME
 
@@ -28,9 +27,9 @@ ENV POSTGRES_NAME=$POSTGRES_NAME
 ENV KAFKA_BROKERS=$KAFKA_BROKERS
 
 
-COPY ./backend /app/backend
+COPY ./core /app/core
 COPY ./db /app/db
 
 
 
-ENTRYPOINT ["uvicorn", "backend.run_web:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["uvicorn", "core.run_web:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -3,10 +3,11 @@ FROM python:slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir alembic sqlalchemy[asyncio] asyncpg python-dotenv
+RUN pip install --no-cache-dir alembic sqlalchemy[asyncio] asyncpg python-dotenv passlib python-jose
 
 
 COPY ./db ./db
+COPY ./common ./common
 COPY ./alembic.ini ./alembic.ini
 ARG POSTGRES_USER
 ARG POSTGRES_PASSWORD
