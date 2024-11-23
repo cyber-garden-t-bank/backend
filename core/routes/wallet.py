@@ -22,9 +22,9 @@ router = APIRouter(
 
 
 
-@router.get("/list", response_model=list[WalletRowsView])
-async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)) -> Optional[list[WalletRowsView]]:
-    # Декодирование токена
+@router.get("/list")
+async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
+
     token_data = await decode_access_token(token=token, db=db)
 
     query = (
@@ -34,12 +34,13 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
     )
 
     result = await db.execute(query)
-    rows = result.all()
+    rows = result.mappings().all()
+
 
     if not rows:
         return None
 
-    return [WalletRowsView.model_validate(row) for row in rows]
+    return rows
 
 
 
