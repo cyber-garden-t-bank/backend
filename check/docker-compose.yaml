@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - check_network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "input_receipt_frame_topic:3:1,recognazed_receipt_info_topic:3:1"
+    ports:
+      - "9092:9092"
+    networks:
+      - check_network
+    depends_on:
+      - zookeeper
+  
+
+  backend:
+    build:
+      context: ./service
+    restart: always
+    ports:
+      - "8482:8000"
+    depends_on:
+      - kafka
+    networks:
+      - check_network
+
+networks:
+  check_network:
+    driver: bridge
