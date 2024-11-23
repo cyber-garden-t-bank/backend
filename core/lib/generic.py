@@ -14,6 +14,12 @@ async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession)
     await row.save(db)
     return model_out_pd.model_validate(row)
 
+async def create_view_from_dict(model_db, dict, db: AsyncSession):
+    row = model_db(**dict)
+    await row.save(db)
+    return row
+
+
 async def get_view(model_db, model_out_pd, db: AsyncSession, model_id=None, by_expr=None):
     if not model_id==None:
         row = await model_db.find_by_id(db, model_id)
