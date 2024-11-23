@@ -36,7 +36,7 @@ async def create_wallet(token: Annotated[str, Depends(oauth2_scheme)],wallet: Wa
 
     if not user:
         raise ForbiddenException("User not found")
-
+    print(user_uuid=user.user_uuid)
     wallet = WalletCreateView(user_uuid=user.user_uuid, wallet_number=wallet.wallet_number, wallet_type=wallet.wallet_type)
 
     return await create_view(Wallet, wallet, WalletUserRequiredView, db)
