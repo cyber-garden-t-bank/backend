@@ -25,7 +25,8 @@ async def get_current_user(
 
     try:
         payload = await decode_access_token(token, db=db)
-        user = await User.find_by_id(db=db, id=payload[SUB])
+        expr = (User.user_uuid == payload[SUB])
+        user = await User.find_by_expr(db=db, expr=expr)
         if user is None:
             raise credentials_exception
     except (JWTError, ValidationError):

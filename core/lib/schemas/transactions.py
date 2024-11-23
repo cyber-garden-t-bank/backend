@@ -5,12 +5,6 @@ class _Transaction(BaseModel):
     amount: float = Field(description="Transaction amount")
     status: str = Field(description="Transaction status")
 
-# class IncomeTransaction(Base, TimeMixin):
-#     __tablename__ = "income_transaction"
-#     transaction_uuid: Mapped[pk_id]
-#     category: Mapped[IncomeTransactionCategory] = mapped_column(String(255))
-#     target_card: Mapped[str] = mapped_column(ForeignKey("card.card_number"))
-#     amount: Mapped[float] = mapped_column(DECIMAL, default=0.0)
 
 class _IncomeTransaction(BaseModel):
     amount: float = Field(description="Transaction amount")
@@ -45,8 +39,6 @@ class TransactionCreateView(_Transaction):
     class Config:
         orm_mode = True
         from_attributes = True
-
-
 
 
 

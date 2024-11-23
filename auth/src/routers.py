@@ -109,7 +109,6 @@ async def me(
     db: AsyncSession = Depends(get_db),
 ):
     token_data = await decode_access_token(token=token, db=db)
-    print(request.cookies)
     return await User.find_by_id(db=db, id=token_data[SUB])
 
 

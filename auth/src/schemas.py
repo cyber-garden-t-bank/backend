@@ -3,18 +3,6 @@ from datetime import datetime
 from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4, Field
 
 
-# class User(Base, AttributeMixin):
-#     __tablename__ = "user"
-#     user_uuid: Mapped[pk_id]
-#     email: Mapped[str] = mapped_column(String(255), unique=True)
-#     phone: Mapped[str] = mapped_column(String(255), unique=True)
-#     firstname: Mapped[str] = mapped_column(String(255))
-#     middlename: Mapped[str] = mapped_column(String(255))
-#     lastname: Mapped[str] = mapped_column(String(255))
-#     password: Mapped[str]
-#     birthday: Mapped[str] = mapped_column(String(255))
-#     gender: Mapped[str] = mapped_column(String(255))
-#     account_status: Mapped[str] = mapped_column(String(255))
 
 
 class UserBase(BaseModel):
