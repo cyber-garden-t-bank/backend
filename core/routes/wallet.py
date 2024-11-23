@@ -27,7 +27,7 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     token_data = await decode_access_token(token=token, db=db)
 
-    join = Wallet.__tablename__.join(Card, Wallet.wallet_number == Card.card_number)
+    join = Wallet.__tablename__.join(Card.__tablename__, Wallet.wallet_number == Card.wallet_number)
 
     query = select(Wallet, Card).select_from(join).where(Wallet.user_uuid == token_data[SUB])
 
