@@ -7,7 +7,7 @@ COPY ./auth/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 #TODO fix this
-RUN pip install passlib, bcrypt
+RUN pip install passlib bcrypt
 
 ENV PYTHONUNBUFFERED=1
 
