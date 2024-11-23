@@ -23,5 +23,5 @@ async def get_cards(db: AsyncSession = Depends(get_db)) -> list[CardView]:
     return await list_view(Card, CardView, db)
 
 @router.post("/create")
-async def create_card(card: CardCreateView, db: AsyncSession = Depends(get_db)) -> CardView:
-    return await create_view(Card, card, CardView, db)
+async def create_card(card: CardCreateView, db: AsyncSession = Depends(get_db)) -> CardCreateView:
+    return await create_view(Card, card, CardCreateView, db)
