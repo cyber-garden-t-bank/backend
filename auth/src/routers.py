@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from db.database import get_db
-from auth.src import schemas
+from common.jwt import schemas
 from common.jwt.hash import get_password_hash
 from common.jwt.jwt import (
     create_token_pair,
