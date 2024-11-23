@@ -39,7 +39,7 @@ async def create_wallet(token: Annotated[str, Depends(oauth2_scheme)],wallet: Wa
     wallet = wallet.model_dump()
     wallet["user_uuid"] = user.user_uuid
 
-    return await create_view_from_dict(Wallet, wallet.model_dump(), db)
+    return await create_view_from_dict(Wallet, wallet, db)
 
 
 @router.get("/detail/{wallet_number}")
