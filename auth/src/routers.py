@@ -50,12 +50,13 @@ async def register(
     user = User(**user_data)
     user.is_active = True
     await user.save(db=db)
-
+    print(user)
 
     user_auth = await User.authenticate(
-        db=db, email=user.email, password=user.password
+        db=db, email=user.email, password=user_data["password"]
     )
 
+    print(user_auth)
     if not user_auth:
         raise BadRequestException(detail="Incorrect email or password")
 
