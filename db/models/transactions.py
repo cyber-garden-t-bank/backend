@@ -22,10 +22,12 @@ class TransactionType(str, enum.Enum):
 class Transaction(Base, TimeMixin):
     __tablename__ = "transaction"
     transaction_uuid: Mapped[pk_id]
+    transaction_user: Mapped[str] = mapped_column(ForeignKey("bank_user.user_uuid"))
     transaction_card_target: Mapped[str] = mapped_column(ForeignKey("card.card_number"))
     transaction_source_card: Mapped[str] = mapped_column(ForeignKey("card.card_number"))
     amount: Mapped[float] = mapped_column(DECIMAL, default=0.0)
     transaction_category: Mapped[str] = mapped_column(String(255))
+
     transaction_type: Mapped[TransactionType] = mapped_column(String(255))
     status: Mapped[str] = mapped_column(String(255), default="undefined")
 

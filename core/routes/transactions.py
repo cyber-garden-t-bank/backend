@@ -20,7 +20,7 @@ router = APIRouter(
 @router.get("/list")
 async def get_transactions( token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[TransactionView]:
     token_data = await decode_access_token(token=token, db=db)
-    # expr = (Transaction.user_uuid == token_data[SUB])
+    expr = (Transaction.transaction_user == token_data[SUB])
     return await list_view(Transaction, TransactionView, db)
 
 @router.post("/create")
