@@ -1,0 +1,124 @@
+x-postgres-environment-vars: &env-vars
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_HOST: db
+  POSTGRES_NAME: postgres
+  POSTGRES_PORT: 5432
+
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+#    network_mode: host
+
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+      - core
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#    command: [ nginx-debug, '-g', 'daemon off;' ]
+  db:
+    image: postgres:15
+    container_name: db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      <<: *env-vars
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  auth:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: docker_iternal/auth.Dockerfile
+    ports:
+      - 8001:8001
+    environment:
+      <<: *env-vars
+
+  core:
+    depends_on:
+      - db
+      - migrations
+      - kafka
+    build:
+      context: .
+      dockerfile: docker_iternal/core.Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      <<: *env-vars
+      KAFKA_BROKERS: kafka:29092
+
+  migrations:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: docker_iternal/migrations.Dockerfile
+    environment:
+      <<: *env-vars
+
+  ml-worker:
+    depends_on:
+      - kafka
+    build:
+      context: .
+      dockerfile: docker_iternal/ml-worker.Dockerfile
+    environment:
+      <<: *env-vars
+      KAFKA_BROKERS: kafka:29092
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    restart: on-failure
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_PORT: 2181
+      ZOO_SERVERS: server.1=zookeeper:2888:3888
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+
+  kafka:
+    image: bitnami/kafka:latest
+    restart: on-failure
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=DEBUG,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT: "6000"
+      KAFKA_RESTART_ATTEMPTS: "10"
+      KAFKA_RESTART_DELAY: "5"
+      KAFKA_CREATE_TOPICS: "lib:1:1"
+      ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
+    depends_on:
+      - zookeeper
+
+
+
+
+volumes:
+  postgres-data:
+    driver: local
+
+
+networks:
+  default:
+    driver: bridge
+
