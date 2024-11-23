@@ -24,9 +24,9 @@ class User(Base, AttributeMixin):
     middlename: Mapped[str] = mapped_column(String(255))
     lastname: Mapped[str] = mapped_column(String(255))
     password: Mapped[str] = mapped_column(String(255))
-    birthday: Mapped[str] = mapped_column(String(255))
-    gender: Mapped[str] = mapped_column(String(255))
-    account_status: Mapped[str] = mapped_column(String(255))
+    # birthday: Mapped[str] = mapped_column(String(255))
+    # gender: Mapped[str] = mapped_column(String(255))
+    # account_status: Mapped[str] = mapped_column(String(255))
 
     @classmethod
     async def find_by_email(cls, db: AsyncSession, email: str):

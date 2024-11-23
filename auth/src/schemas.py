@@ -1,6 +1,7 @@
 
 from datetime import datetime
-from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4
+from pydantic import BaseModel, PositiveInt, field_validator, EmailStr, UUID4, Field
+
 
 # class User(Base, AttributeMixin):
 #     __tablename__ = "user"
@@ -23,9 +24,6 @@ class UserBase(BaseModel):
     middlename: str
     lastname: str
     password: str
-    birthday: str
-    gender: str
-    account_status: str
 
 
 class UserCreate(UserBase):
@@ -42,7 +40,7 @@ class User(UserBase):
 
 class UserRegister(UserBase):
     password: str
-    confirm_password: str
+    confirm_password: str = Field(alias="repeatPassword")
     class Config:
         orm_mode = True
         from_attributes = True
