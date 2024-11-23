@@ -21,7 +21,7 @@ router = APIRouter(
 
 
 @router.get("/list")
-async def get_wallets(token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[WalletView]:
+async def get_wallets(token: Annotated[str, Depends(oauth2_scheme)],db: AsyncSession = Depends(get_db)) -> list[WalletView]|None:
     token_data = await decode_access_token(token=token, db=db)
     expr = (Wallet.user_uuid == token_data[SUB])
     return await selected_list(expr, Wallet, WalletView, db)
