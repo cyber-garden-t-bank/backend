@@ -28,15 +28,11 @@ router = APIRouter(
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-@router.post("/register")
+@router.post("/register", response_model=schemas.User)
 async def register(
-    response: Response,
     data: schemas.UserRegister,
-
     background_tasks: BackgroundTasks,
-
     db: AsyncSession = Depends(get_db),
-
 ):
     user = await User.find_by_email(db=db, email=data.email)
     if user:
@@ -50,24 +46,9 @@ async def register(
     user = User(**user_data)
     user.is_active = True
     await user.save(db=db)
-    print(user)
+    user_schema = schemas.User.from_orm(user)
+    return user_schema
 
-    user_auth = await User.authenticate(
-        db=db, email=user.email, password=user_data["password"]
-    )
-
-    print(user_auth)
-    if not user_auth:
-        raise BadRequestException(detail="Incorrect email or password")
-
-    # if not user.is_active:
-    #     raise ForbiddenException()
-
-    user_auth = schemas.User.from_orm(user_auth)
-
-    token_pair = create_token_pair(user=user_auth)
-
-    add_refresh_token_cookie(response=response, token=token_pair.refresh.token)
 
 
 @router.post("/login")
