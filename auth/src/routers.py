@@ -111,6 +111,6 @@ async def me(
     token_data = await decode_access_token(token=token, db=db)
     expr = (User.user_uuid == token_data[SUB])
     return await User.find_by_expr(db=db, expr=expr)
-    return await User.find_by_id(db=db, id=token_data[SUB])
+
 
 
