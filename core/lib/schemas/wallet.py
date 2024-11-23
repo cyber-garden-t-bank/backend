@@ -13,7 +13,7 @@ class WalletView(BaseModel):
         from_attributes = True
 
 class WalletCreateView(BaseModel):
-    user_uuid:str = Field(description="User uuid")
+    user_uuid: Optional[str] = Field(default=None, description="User  uuid")
     wallet_number: str = Field(validation_alias="walletNumber", alias="wallet_number", description="Wallet number")
     wallet_type: str = Field(validation_alias="walletType", alias="wallet_type", description="Wallet type")
 
