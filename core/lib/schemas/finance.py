@@ -29,7 +29,6 @@ from pydantic import Field, BaseModel
 class FinanceCreateView(BaseModel):
     category: str
     source: str = Field(description="Transaction uuid")
-    transaction_uuid: str = Field(validation_alias="id", serialization_alias="transaction_uuid", description="Transaction uuid")
     target_card: str = Field(validation_alias="cardNumber", serialization_alias="target_card", description="Target card")
     amount: float
 
