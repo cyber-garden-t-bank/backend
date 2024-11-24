@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from common.jwt.jwt import decode_access_token, oauth2_scheme, SUB
 from core.lib.generic import list_view, create_view, get_view, selected_list
-from core.lib.schemas.finance import IncomeFinanceView, FinanceCreateView, IncomeFinanceView
+from core.lib.schemas.finance import FinanceCreateView, IncomeFinanceView
 from db.database import get_db
 from db.models.transactions import Transaction, IncomeTransaction
 
@@ -25,7 +25,7 @@ async def get_transactions( token: Annotated[str, Depends(oauth2_scheme)], from_
     expr = (IncomeTransaction.transaction_user == token_data[SUB])
 
     if from_date:
-        from_date_parsed = datetime.fromisoformat(from_date).astimezone()
+        from_date_parsed = datetime.fromisoformat(from_date)
         expr = and_(expr, IncomeTransaction.created_at >= from_date_parsed)
 
     if to_date:
