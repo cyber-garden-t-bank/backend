@@ -46,9 +46,9 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     for row in rows:
         if row.Wallet.wallet_number not in wallet_dicts:
-            wallet_dicts.append(**row.Wallet)
+            wallet_dicts.append(**row.get("Wallet"))
         if row.Card is not None:
-            cards_dict.append(**row.Card)
+            cards_dict.append(**row.get("Card"))
 
     print(wallet_dicts, cards_dict)
 
