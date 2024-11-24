@@ -1,4 +1,6 @@
-from typing import Annotated
+from datetime import datetime
+from operator import and_
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,11 +19,17 @@ router = APIRouter(
 
 
 @router.get("/list")
-async def get_transactions(
-    token: Annotated[str, Depends(oauth2_scheme)], db: AsyncSession = Depends(get_db)
-) -> list[FinanceView]:
+async def get_transactions( token: Annotated[str, Depends(oauth2_scheme)], from_date: Optional[str] = None, to_date: Optional[str] = None, db: AsyncSession = Depends(get_db)) -> list[FinanceView]:
     token_data = await decode_access_token(token=token, db=db)
-    expr = ExpenseTransaction.transaction_user == token_data[SUB]
+    expr = (ExpenseTransaction.transaction_user == token_data[SUB])
+
+    if from_date:
+        from_date_parsed = datetime.fromisoformat(from_date)
+        expr = and_(expr, ExpenseTransaction.created_at >= from_date_parsed)
+
+    if to_date:
+        to_date_parsed = datetime.fromisoformat(to_date)
+        expr = and_(expr, ExpenseTransaction.created_at <= to_date_parsed)
     return await selected_list(expr, ExpenseTransaction, FinanceView, db)
 
 
