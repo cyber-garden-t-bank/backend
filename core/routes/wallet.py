@@ -46,24 +46,23 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     for row in rows:
         if row.Wallet.wallet_number not in wallet_dicts:
-            wallet_dicts.append(row.get("Wallet"))
+            wallet = row.get("Wallet")
+            wallet_dicts.append({"wallet_number": wallet.wallet_number, "balance": wallet.balance, "wallet_type": wallet.wallet_type,"wallet_id":wallet.wallet_uuid})
         if row.Card is not None:
-            cards_dict.append(row.get("Card"))
+            card = row.get("Card")
+            cards_dict.append({"card_number": card.card_number, "balance": card.balance, "card_type": card.card_type, "card_id": card.card_uuid})
 
-    print(wallet_dicts, cards_dict)
 
-    joined_dicts = []
 
     for wallet in wallet_dicts:
         for card in cards_dict:
-            if card.wallet_number == wallet.wallet_number:
-                joined_dicts.append({**wallet, "card":card})
-            else:
-                joined_dicts.append({**wallet, "card":[]})
+            if card.get("wallet_number") == wallet.get("wallet_number"):
+                wallet["cards"] = card
 
 
 
-    return joined_dicts
+
+    return wallet_dicts
 
 
 
