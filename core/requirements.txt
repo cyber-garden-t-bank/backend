@@ -41,3 +41,5 @@ uvloop==0.21.0
 watchfiles==0.24.0
 websockets==14.1
 asyncpg
+
+python-jose

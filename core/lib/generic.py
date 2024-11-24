@@ -2,13 +2,25 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def list_view(model_db,model_pd, db: AsyncSession):
-    rows = await model_db.find_all(db)
+    rows = await model_db.select_all(db)
+    return [model_pd.model_validate(row) for row in rows]
+
+async def selected_list(expr, model_db, model_pd, db: AsyncSession):
+    rows = await model_db.select_by_expr(expr, db)
+    if rows is None:
+        return None
     return [model_pd.model_validate(row) for row in rows]
 
 async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession):
     row = model_db(**model_create_pd.model_dump())
     await row.save(db)
     return model_out_pd.model_validate(row)
+
+async def create_view_from_dict(model_db, dict, db: AsyncSession):
+    row = model_db(**dict)
+    await row.save(db)
+    return row
+
 
 async def get_view(model_db, model_out_pd, db: AsyncSession, model_id=None, by_expr=None):
     if not model_id==None:

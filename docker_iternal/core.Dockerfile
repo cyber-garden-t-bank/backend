@@ -7,6 +7,8 @@ COPY ./core/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 
+RUN pip install passlib
+
 ENV PYTHONUNBUFFERED=1
 
 
@@ -30,6 +32,7 @@ ENV KAFKA_BROKERS=$KAFKA_BROKERS
 COPY ./core /app/core
 COPY ./db /app/db
 
+COPY ./common /app/common
 
 
 ENTRYPOINT ["uvicorn", "core.run_web:app", "--host", "0.0.0.0", "--port", "8000"]

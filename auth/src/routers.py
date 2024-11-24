@@ -5,9 +5,9 @@ from fastapi.requests import Request
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Response, Cookie
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth.src.dependencies import oauth2_scheme
+
 from db.database import get_db
-from auth.src import schemas
+from common.jwt import schemas
 from common.jwt.hash import get_password_hash
 from common.jwt.jwt import (
     create_token_pair,
@@ -16,9 +16,9 @@ from common.jwt.jwt import (
     add_refresh_token_cookie,
     SUB,
     JTI,
-    EXP,
+    EXP, oauth2_scheme,
 )
-from auth.src.exceptions import BadRequestException, ForbiddenException
+from common.exceptions import BadRequestException, ForbiddenException
 from db.models.users import User, BlackListToken
 
 router = APIRouter(
@@ -109,6 +109,8 @@ async def me(
     db: AsyncSession = Depends(get_db),
 ):
     token_data = await decode_access_token(token=token, db=db)
-    return await User.find_by_id(db=db, id=token_data[SUB])
+    expr = (User.user_uuid == token_data[SUB])
+    return await User.find_by_expr(db=db, expr=expr)
+
 
 
