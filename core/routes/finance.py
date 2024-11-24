@@ -28,7 +28,7 @@ async def create_transaction(token: Annotated[str, Depends(oauth2_scheme)],trans
     token_data = await decode_access_token(token=token, db=db)
     trans.transaction_user = token_data[SUB]
     print(trans)
-    return await create_view(IncomeTransaction, trans, FinanceView, db, transaction_user=token_data[SUB])
+    return await create_view(IncomeTransaction, trans, FinanceView, db)
 
 
 @router.get("/detail/{finance_uuid}")
