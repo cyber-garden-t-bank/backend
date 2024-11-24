@@ -1,1 +1,3 @@
 confluent-kafka
+opencv-python
+pyzbar

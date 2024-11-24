@@ -10,3 +10,4 @@ SECRET_KEY = os.getenv(
 )
 if not SECRET_KEY:
     SECRET_KEY = os.urandom(32)
+
