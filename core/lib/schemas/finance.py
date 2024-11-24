@@ -27,6 +27,7 @@ from pydantic import Field, BaseModel
 #     amount: Mapped[float] = mapped_column(DECIMAL, default=0.0)
 
 class FinanceCreateView(BaseModel):
+    transaction_user: str|None = Field(default=None, description="User uuid")
     category: str
     source: str = Field(description="Transaction uuid")
     target_card: str = Field(validation_alias="cardNumber", serialization_alias="target_card", description="Target card")
