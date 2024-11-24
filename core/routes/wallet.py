@@ -50,7 +50,7 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
             wallet_dicts.append({"wallet_number": wallet.wallet_number, "balance": wallet.balance, "wallet_type": wallet.wallet_type,"wallet_id":wallet.wallet_uuid})
         if row.Card is not None:
             card = row.get("Card")
-            cards_dict.append({"card_number": card.card_number, "balance": card.balance, "card_type": card.card_type, "card_id": card.card_uuid})
+            cards_dict.append({"wallet_number": card.wallet_number,"card_number": card.card_number, "balance": card.balance, "card_type": card.card_type, "card_id": card.card_uuid})
 
 
 
