@@ -45,6 +45,7 @@ class FinanceView(BaseModel):
     source: str
     transaction_uuid: uuid.UUID = Field(validation_alias="transaction_uuid", serialization_alias="id", description="Transaction uuid")
     amount: float
+    created_at: str = Field(serialization_alias="createdAt",validation_alias="created_at", description="Created at")
 
     class Config:
         orm_mode = True
