@@ -5,6 +5,7 @@ from confluent_kafka import Consumer, KafkaError, KafkaException
 
 from workers.expense_actor import ExpenseAnalyticsActor
 from workers.test_actor import TestActor
+from workers.parser_actor import ParserAnalyticsActor
 
 # engine = create_engine(postgres_async_config.SYNC_POSTGRES_URL, echo=True)
 # SessionFactory = sessionmaker(bind=engine)
@@ -20,14 +21,16 @@ conf = {
 
 
 consumer = Consumer(conf)
-topics = ['expense_analytics', 'test']
+topics = ['expense_analytics','parser', 'test']
 consumer.subscribe(topics)
 
 class KafkaReciever:
     def __init__(self):
         self.actors = {
             'expense_analytics': ExpenseAnalyticsActor,
-            'test': TestActor
+            'parser': ParserAnalyticsActor,
+            'test': TestActor,
+
         }
 
 

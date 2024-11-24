@@ -1,5 +1,3 @@
-import os
-
 from fastapi import FastAPI
 import uvicorn
 
@@ -11,7 +9,7 @@ from core.routes.organization import router as router_organizations
 from core.routes.transactions import router as router_transactions
 from core.routes.finance import router as router_finance
 from core.routes.expense import router as router_expense
-from core.routes.media import router as router_media
+from core.routes.kafka.media import router as router_media
 # from core.routes.kafka.test import router as router_kafka
 
 from fastapi import Response
