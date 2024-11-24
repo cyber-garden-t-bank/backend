@@ -12,8 +12,8 @@ from db.database import get_db
 from db.models.transactions import Transaction, IncomeTransaction
 
 router = APIRouter(
-    prefix="/finance",
-    tags=["finance"],
+    prefix="/income",
+    tags=["income"],
     responses={404: {"description": "Not found"}},
 )
 

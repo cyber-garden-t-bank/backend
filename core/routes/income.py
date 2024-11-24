@@ -11,8 +11,8 @@ from db.models.transactions import IncomeTransaction
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/income",
-    tags=["core"],
+    prefix="/deprecated/income",
+    tags=["deprecated"],
     responses={404: {"description": "Not found"}},
 )
 
