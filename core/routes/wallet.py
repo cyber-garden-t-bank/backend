@@ -35,7 +35,7 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
     )
 
     result = await db.execute(query)
-    rows = result.all()
+    rows = result.mappings().all()
 
     print([row for row in rows])
 
@@ -46,9 +46,9 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
     for row in rows:
         if row.Wallet.wallet_number not in wallet_dicts:
-            wallet_dicts.append(row.Wallet)
+            wallet_dicts.append(**row.Wallet)
         if row.Card is not None:
-            cards_dict.append(row.Card)
+            cards_dict.append(**row.Card)
 
     print(wallet_dicts, cards_dict)
 
@@ -60,6 +60,7 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
                 joined_dicts.append({**wallet, "card":card})
             else:
                 joined_dicts.append({**wallet, "card":[]})
+
 
 
     return joined_dicts
