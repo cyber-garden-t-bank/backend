@@ -3,7 +3,7 @@ from io import BytesIO
 
 
 router = APIRouter(
-    prefix="/media",
+    prefix="/finance",
     tags=["media"],
 )
 
