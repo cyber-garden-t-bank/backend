@@ -11,8 +11,8 @@ async def selected_list(expr, model_db, model_pd, db: AsyncSession):
         return None
     return [model_pd.model_validate(row) for row in rows]
 
-async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession):
-    row = model_db(**model_create_pd.model_dump())
+async def create_view(model_db, model_create_pd, model_out_pd, db: AsyncSession, **kwargs):
+    row = model_db(**model_create_pd.model_dump(), **kwargs)
     await row.save(db)
     return model_out_pd.model_validate(row)
 
