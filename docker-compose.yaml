@@ -42,6 +42,18 @@ services:
     environment:
       <<: *env-vars
 
+  chatbot:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: docker_iternal/chat.Dockerfile
+    ports:
+      - 8002:8002
+    environment:
+      <<: *env-vars
+
+
   core:
     depends_on:
       - db
