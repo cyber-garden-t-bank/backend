@@ -65,15 +65,15 @@ services:
     environment:
       <<: *env-vars
 
-  ml-worker:
-    depends_on:
-      - kafka
-    build:
-      context: .
-      dockerfile: docker_iternal/ml-worker.Dockerfile
-    environment:
-      <<: *env-vars
-      KAFKA_BROKERS: kafka:29092
+#  ml-worker:
+#    depends_on:
+#      - kafka
+#    build:
+#      context: .
+#      dockerfile: docker_iternal/ml-worker.Dockerfile
+#    environment:
+#      <<: *env-vars
+#      KAFKA_BROKERS: kafka:29092
 
   zookeeper:
     image: bitnami/zookeeper:latest
