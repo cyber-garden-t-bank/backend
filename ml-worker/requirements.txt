@@ -1,1 +1,1 @@
-bytewax[kafka]
+confluent-kafka

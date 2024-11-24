@@ -1,4 +1,5 @@
-from generic_actor import GenericKafkaActor
+from interfaces.generic_actor import GenericKafkaActor
+
 
 
 class ExpenseAnalyticsActor(GenericKafkaActor):

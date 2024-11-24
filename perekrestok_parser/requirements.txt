@@ -1,0 +1,6 @@
+aiohttp
+aiokafka
+sqlalchemy
+asyncio
+parsel
+psycopg2-binary

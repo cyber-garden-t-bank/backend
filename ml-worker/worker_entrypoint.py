@@ -1,12 +1,10 @@
-
 import os
 import sys
 
-
 from confluent_kafka import Consumer, KafkaError, KafkaException
 
-from receipt.examples.image2text.easyocr_test import result
 from workers.expense_actor import ExpenseAnalyticsActor
+from workers.test_actor import TestActor
 
 # engine = create_engine(postgres_async_config.SYNC_POSTGRES_URL, echo=True)
 # SessionFactory = sessionmaker(bind=engine)
@@ -20,19 +18,21 @@ conf = {
     'auto.offset.reset': 'earliest'
 }
 
+
 consumer = Consumer(conf)
-topics = ['expense_analytics']
+topics = ['expense_analytics', 'test']
 consumer.subscribe(topics)
 
 class KafkaReciever:
     def __init__(self):
         self.actors = {
-            'expense_analytics': ExpenseAnalyticsActor
+            'expense_analytics': ExpenseAnalyticsActor,
+            'test': TestActor
         }
 
 
     def __call__(self, message, topic):
-        actor = self.actors.get(topic)
+        actor = self.actors.get(topic, 'test')
         if not actor:
             raise Exception(f'No actor for topic {topic}')
         try:
@@ -42,7 +42,8 @@ class KafkaReciever:
         result = actor.process(message)
 
         if result:
-            actor.output()
+            print(actor.output())
+            return actor.output()
         return
 
 
@@ -61,9 +62,12 @@ def basic_consume_loop(consumer, topics):
 
         while running:
             msg = consumer.poll(timeout=1.0)
-            print('msg: ', msg)
+
             if msg is None:
+                print("no message")
                 continue
+
+            print('msg: ', msg.value().decode('utf-8'))
 
             if msg.error():
                 if msg.error().code() == KafkaError.UNKNOWN_TOPIC_OR_PART:
@@ -75,10 +79,11 @@ def basic_consume_loop(consumer, topics):
                 elif msg.error():
                     raise KafkaException(msg.error())
             else:
+                print(msg.topic())
                 kafka_receiver(msg.value().decode('utf-8'), msg.topic())
     finally:
         consumer.close()
 
 
 if __name__ == '__main__':
-    basic_consume_loop(consumer, ['video'])
+    basic_consume_loop(consumer, topics)

@@ -48,8 +48,15 @@ class FinanceView(BaseModel):
     amount: float
     created_at: datetime = Field(serialization_alias="createdAt",validation_alias="created_at", description="Created at")
 
+    expense: bool = Field(description="Expense")
+
     class Config:
         orm_mode = True
         from_attributes = True
 
+class IncomeFinanceView(FinanceView):
+    expense: bool = False
+
+class ExpenseFinanceView(FinanceView):
+    expense: bool = True
 

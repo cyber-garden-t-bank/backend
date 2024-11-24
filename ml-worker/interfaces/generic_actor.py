@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class GenericKafkaActor(ABC):
 
     @abstractmethod
-    def process(self, data):
+    def process(self, message):
         """Метод для обработки данных."""
         raise NotImplementedError(
             "process() method is not implemented")

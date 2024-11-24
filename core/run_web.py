@@ -11,6 +11,8 @@ from core.routes.organization import router as router_organizations
 from core.routes.transactions import router as router_transactions
 from core.routes.finance import router as router_finance
 from core.routes.expense import router as router_expense
+from core.routes.media import router as router_media
+from core.routes.kafka.test import router as router_kafka
 
 from fastapi import Response
 
@@ -47,6 +49,8 @@ app.include_router(router_services)
 app.include_router(router_transactions)
 app.include_router(router_finance)
 app.include_router(router_expense)
+app.include_router(router_media)
+app.include_router(router_kafka)
 
 
 @app.get("/")

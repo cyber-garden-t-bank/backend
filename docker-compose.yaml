@@ -77,15 +77,22 @@ services:
     environment:
       <<: *env-vars
 
-#  ml-worker:
-#    depends_on:
-#      - kafka
+#  perekrestok:
 #    build:
 #      context: .
-#      dockerfile: docker_iternal/ml-worker.Dockerfile
-#    environment:
-#      <<: *env-vars
-#      KAFKA_BROKERS: kafka:29092
+#      dockerfile: docker_iternal/perekrestok.Dockerfile
+
+
+  ml-worker:
+    depends_on:
+      - kafka
+    build:
+      context: .
+      dockerfile: docker_iternal/ml-worker.Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      <<: *env-vars
+
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -137,6 +144,7 @@ services:
 volumes:
   postgres-data:
     driver: local
+
 
 
 networks:

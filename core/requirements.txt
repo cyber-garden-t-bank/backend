@@ -42,6 +42,5 @@ watchfiles==0.24.0
 websockets==14.1
 
 asyncpg
-boto3
-botocore
 python-jose
+confluent-kafka
