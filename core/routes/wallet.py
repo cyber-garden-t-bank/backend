@@ -50,6 +50,8 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
         if row.Card is not None:
             cards_dict.append(row.Card)
 
+    print(wallet_dicts, cards_dict)
+
     joined_dicts = []
 
     for wallet in wallet_dicts:
