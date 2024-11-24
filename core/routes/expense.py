@@ -1,5 +1,5 @@
 from datetime import datetime
-from operator import and_
+from sqlalchemy import and_
 from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends
