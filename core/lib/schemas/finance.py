@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import Field, BaseModel
 
 
@@ -41,7 +43,7 @@ class FinanceView(BaseModel):
     target_card: str = Field(serialization_alias="cardNumber", validation_alias="target_card", description="Target card")
     category: str
     source: str
-    transaction_uuid: str = Field(validation_alias="transaction_uuid", serialization_alias="id", description="Transaction uuid")
+    transaction_uuid: uuid.UUID = Field(validation_alias="transaction_uuid", serialization_alias="id", description="Transaction uuid")
     amount: float
 
     class Config:
