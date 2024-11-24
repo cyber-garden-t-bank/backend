@@ -39,6 +39,8 @@ class Transaction(Base, TimeMixin):
 class IncomeTransaction(Base, TimeMixin):
     __tablename__ = "income_transaction"
     transaction_uuid: Mapped[pk_id]
+    transaction_user: Mapped[str] = mapped_column(ForeignKey("bank_user.user_uuid"))
     category: Mapped[IncomeTransactionCategory] = mapped_column(String(255))
     target_card: Mapped[str] = mapped_column(ForeignKey("card.card_number"))
+    source: Mapped[str] = mapped_column(String(255), default="none")
     amount: Mapped[float] = mapped_column(DECIMAL, default=0.0)

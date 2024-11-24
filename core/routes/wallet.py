@@ -55,13 +55,10 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
 
 
     for wallet in wallet_dicts:
+        wallet["cards"] = []
         for card in cards_dict:
             if card.get("wallet_number") == wallet.get("wallet_number"):
-                wallet["cards"] = card
-            else:
-                wallet["cards"] = []
-
-
+                wallet["cards"].append(card)
 
 
     return wallet_dicts

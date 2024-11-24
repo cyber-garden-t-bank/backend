@@ -9,6 +9,7 @@ from core.routes.wallet import router as router_wallet
 from core.routes.services import router as router_services
 from core.routes.organization import router as router_organizations
 from core.routes.transactions import router as router_transactions
+from core.routes.finance import router as router_finance
 
 from fastapi import Response
 
@@ -43,6 +44,7 @@ app.include_router(router_wallet)
 app.include_router(router_organizations)
 app.include_router(router_services)
 app.include_router(router_transactions)
+app.include_router(router_finance)
 
 
 @app.get("/")

@@ -43,7 +43,7 @@ class KafkaReciever:
 
         if result:
             actor.output()
-        return actor(message)
+        return
 
 
 running = True
