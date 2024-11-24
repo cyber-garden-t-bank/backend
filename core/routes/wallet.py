@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends
@@ -28,19 +29,34 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
     token_data = await decode_access_token(token=token, db=db)
 
     query = (
-        select(Wallet, Card)
+        select(Wallet)
         .outerjoin(Card, Card.wallet_number == Wallet.wallet_number)
         .where(Wallet.user_uuid == token_data[SUB])
     )
 
-    print(query)
-
     result = await db.execute(query)
-    rows = result.mappings().all()
+    rows = result.all()
 
-    print(rows)
+    # Создаем словарь для группировки карточек по кошелькам
+    wallet_dicts = []
 
-    return rows
+    cards_dict = []
+
+    for row in rows:
+        if row.Wallet.wallet_number not in wallet_dicts:
+            wallet_dicts.append(row.Wallet.wallet_number)
+        if row.Card is not None:
+            cards_dict.append(row.Card)
+
+    joined_dicts = []
+
+    for wallet in wallet_dicts:
+        for card in cards_dict:
+            if card.wallet_number == wallet.wallet_number:
+                joined_dicts.append({**wallet, "card":card})
+
+
+    return joined_dicts
 
 
 
