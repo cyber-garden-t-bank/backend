@@ -34,7 +34,7 @@ async def create_transaction(token: Annotated[str, Depends(oauth2_scheme)],trans
 @router.get("/detail/{finance_uuid}")
 async def get_transaction(finance_uuid: str, db: AsyncSession = Depends(get_db)) -> FinanceView:
     expr = (IncomeTransaction.transaction_uuid == finance_uuid)
-    return await get_view(Transaction, FinanceView, db, by_expr=expr)
+    return await get_view(IncomeTransaction, FinanceView, db, by_expr=expr)
 
 
 
