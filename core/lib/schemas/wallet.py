@@ -18,11 +18,7 @@ class WalletRowsView(BaseModel):
     wallet_number: str = Field(serialization_alias="walletNumber", description="Wallet number")
     balance: float = Field(description="Wallet balance")
     wallet_type: str = Field(serialization_alias="walletType", description="Wallet type")
-
     cards: list[CardMiniView] = Field(description="Wallet cards")
-
-
-
 
     class Config:
         orm_mode = True

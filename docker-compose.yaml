@@ -65,15 +65,15 @@ services:
     environment:
       <<: *env-vars
 
-  ml-worker:
-    depends_on:
-      - kafka
-    build:
-      context: .
-      dockerfile: docker_iternal/ml-worker.Dockerfile
-    environment:
-      <<: *env-vars
-      KAFKA_BROKERS: kafka:29092
+#  ml-worker:
+#    depends_on:
+#      - kafka
+#    build:
+#      context: .
+#      dockerfile: docker_iternal/ml-worker.Dockerfile
+#    environment:
+#      <<: *env-vars
+#      KAFKA_BROKERS: kafka:29092
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -109,7 +109,16 @@ services:
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
     depends_on:
       - zookeeper
-
+  kowl:
+    image: quay.io/cloudhut/kowl:v1.4.0
+    restart: on-failure
+    volumes:
+      - ./kowl_config:/etc/kowl/
+    ports:
+      - "8081:8080"
+    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
+    depends_on:
+      - kafka
 
 
 
