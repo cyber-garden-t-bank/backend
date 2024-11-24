@@ -32,6 +32,10 @@ class FinanceCreateView(BaseModel):
     target_card: str = Field(validation_alias="cardNumber", serialization_alias="target_card", description="Target card")
     amount: float
 
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
 class FinanceView(BaseModel):
     target_card: str = Field(serialization_alias="cardNumber", validation_alias="target_card", description="Target card")
     category: str
@@ -39,5 +43,8 @@ class FinanceView(BaseModel):
     transaction_uuid: str = Field(validation_alias="transaction_uuid", serialization_alias="id", description="Transaction uuid")
     amount: float
 
+    class Config:
+        orm_mode = True
+        from_attributes = True
 
 
