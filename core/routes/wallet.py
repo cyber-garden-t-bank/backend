@@ -58,6 +58,8 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
         for card in cards_dict:
             if card.get("wallet_number") == wallet.get("wallet_number"):
                 wallet["cards"] = card
+            else:
+                wallet["cards"] = []
 
 
 
