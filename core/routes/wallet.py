@@ -35,7 +35,9 @@ async def get_wallets(token: str = Depends(oauth2_scheme), db: AsyncSession = De
     )
 
     result = await db.execute(query)
-    rows = result.all()
+    rows = result.scalars().all()
+
+    print(result)
 
     # Создаем словарь для группировки карточек по кошелькам
     wallet_dicts = []
